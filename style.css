@@ -1,4 +1,4 @@
-/* فونت پیش‌فرض سیستم برای خوانایی بهتر */
+    /* فونت پیش‌فرض سیستم برای خوانایی بهتر */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -13,7 +13,9 @@ body {
     justify-content: center;
     align-items: center;
     margin: 0;
-    padding: 10px;
+    padding: 8px;
+    /* برای تشخیص ضربه در کل صفحه */
+    touch-action: manipulation;
 }
 
 .game-container {
@@ -22,7 +24,7 @@ body {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     border-radius: 36px;
-    padding: 20px 16px;
+    padding: 16px 12px;
     box-shadow: 0 25px 40px rgba(0, 0, 0, 0.3);
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
@@ -30,8 +32,8 @@ body {
 .game-title {
     text-align: center;
     color: #ffd966;
-    font-size: 1.8rem;
-    margin-bottom: 12px;
+    font-size: 1.6rem;
+    margin-bottom: 10px;
     text-shadow: 2px 2px 0 #b4652a;
     letter-spacing: 1px;
 }
@@ -42,9 +44,9 @@ body {
     justify-content: space-between;
     align-items: center;
     background: #213743;
-    padding: 10px 18px;
+    padding: 8px 16px;
     border-radius: 60px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     color: white;
     border: 1px solid #5f9db2;
 }
@@ -52,12 +54,12 @@ body {
 .player-indicator {
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 1rem;
+    gap: 6px;
+    font-size: 0.95rem;
 }
 
 .player-emoji {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
 }
 
 #playerPosition {
@@ -71,12 +73,13 @@ body {
     border: none;
     color: #1e2f3a;
     font-weight: bold;
-    padding: 8px 16px;
+    padding: 6px 14px;
     border-radius: 40px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     cursor: pointer;
     box-shadow: 0 4px 0 #a8651e;
     transition: all 0.1s ease;
+    touch-action: manipulation;
 }
 
 .new-game-btn:active {
@@ -84,39 +87,57 @@ body {
     box-shadow: 0 0 0 #a8651e;
 }
 
-/* صفحه بازی (گرید) */
+/* صفحه بازی (گرید) - اصلاح شده برای نمایش درست */
 .board {
     background: #ecd8b4;
-    border-radius: 24px;
-    padding: 16px;
+    border-radius: 20px;
+    padding: 10px;
     display: grid;
     grid-template-columns: repeat(10, 1fr);
-    gap: 4px;
-    aspect-ratio: 1 / 1;
-    box-shadow: inset 0 0 0 2px #aa8e6c, 0 10px 20px rgba(0, 0, 0, 0.3);
-    margin-bottom: 20px;
+    gap: 3px;
+    width: 100%;
+    /* حذف aspect-ratio ثابت */
+    box-shadow: inset 0 0 0 2px #aa8e6c, 0 8px 15px rgba(0, 0, 0, 0.3);
+    margin-bottom: 15px;
 }
 
 .cell {
     background: #f9e9cf;
-    border-radius: 8px;
+    border-radius: 6px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     font-size: 0.7rem;
     font-weight: bold;
     color: #3f2e1e;
-    aspect-ratio: 1 / 1;
+    /* ارتفاع خودکار بر اساس محتوا */
+    padding: 8px 2px;
+    min-height: 35px;
     position: relative;
     box-shadow: 0 2px 0 #b69b7c;
     transition: background 0.2s ease;
+    line-height: 1.2;
+}
+
+/* برای صفحه‌های کوچکتر (موبایل) */
+@media (max-width: 400px) {
+    .cell {
+        font-size: 0.6rem;
+        padding: 6px 1px;
+        min-height: 30px;
+    }
+    
+    .cell-special {
+        font-size: 0.8rem;
+    }
 }
 
 /* خانه فعلی بازیکن */
 .cell.player {
     background: #f7d51e;
     box-shadow: 0 0 0 3px #ffffff, 0 2px 0 #b69b7c;
-    transform: scale(1.05);
+    transform: scale(1.02);
     z-index: 2;
 }
 
@@ -140,24 +161,25 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-around;
-    gap: 12px;
+    gap: 10px;
     background: #1d3e4b;
-    padding: 16px;
-    border-radius: 80px;
+    padding: 12px;
+    border-radius: 60px;
     border: 1px solid #5899b3;
+    margin-bottom: 8px;
 }
 
 .dice-container {
     background: #ffffff;
-    border-radius: 24px;
-    padding: 8px;
+    border-radius: 20px;
+    padding: 5px;
     box-shadow: inset 0 -3px 0 #aaaaaa;
 }
 
 .dice {
-    font-size: 3.2rem;
+    font-size: 2.8rem;
     line-height: 1;
-    min-width: 80px;
+    min-width: 70px;
     text-align: center;
     transition: transform 0.3s ease;
 }
@@ -167,18 +189,19 @@ body {
     border: none;
     color: white;
     font-weight: bold;
-    font-size: 1.4rem;
-    padding: 16px 24px;
-    border-radius: 60px;
+    font-size: 1.3rem;
+    padding: 14px 20px;
+    border-radius: 50px;
     flex: 1;
     cursor: pointer;
-    box-shadow: 0 6px 0 #217a94;
+    box-shadow: 0 5px 0 #217a94;
     transition: all 0.1s ease;
     letter-spacing: 1px;
+    touch-action: manipulation;
 }
 
 .roll-btn:active {
-    transform: translateY(6px);
+    transform: translateY(5px);
     box-shadow: 0 0 0 #217a94;
 }
 
@@ -190,13 +213,35 @@ body {
 }
 
 .game-message {
-    margin-top: 16px;
+    margin-top: 12px;
     text-align: center;
     background: #152d36;
     color: #cbe7f1;
-    padding: 12px;
-    border-radius: 40px;
-    font-size: 1rem;
+    padding: 10px;
+    border-radius: 30px;
+    font-size: 0.95rem;
     font-weight: 500;
     border: 1px solid #408697;
+}
+
+/* انیمیشن برای مار */
+@keyframes snakeBite {
+    0% { transform: scale(1); background-color: #ff4444; }
+    50% { transform: scale(1.1); background-color: #ff0000; color: white; }
+    100% { transform: scale(1); background-color: #f9e9cf; }
+}
+
+.snake-animation {
+    animation: snakeBite 0.6s ease-in-out;
+}
+
+/* انیمیشن برای پله */
+@keyframes ladderClimb {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); background-color: #4caf50; color: white; }
+    100% { transform: translateY(0); }
+}
+
+.ladder-animation {
+    animation: ladderClimb 0.5s ease-in-out;
 }
