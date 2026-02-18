@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>بازی مار و پله | بله</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <h1 class="game-title">🎲 مار و پله 🐍</h1>
+
+        <!-- نمایش وضعیت بازیکن -->
+        <div class="player-status">
+            <div class="player-indicator">
+                <span class="player-emoji">🧑</span>
+                <span>موقعیت شما: <span id="playerPosition">1</span></span>
+            </div>
+            <button id="newGameBtn" class="new-game-btn">بازی جدید</button>
+        </div>
+
+        <!-- محلی برای رسم صفحه بازی با جاوااسکریپت -->
+        <div id="board" class="board"></div>
+
+        <!-- بخش تاس و کنترل -->
+        <div class="controls">
+            <div class="dice-container">
+                <div id="dice" class="dice">🎲</div>
+            </div>
+            <button id="rollDiceBtn" class="roll-btn">پرتاب تاس</button>
+        </div>
+
+        <!-- پیام‌های بازی -->
+        <div id="gameMessage" class="game-message">روی دکمه تاس بزنید تا شروع کنید!</div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
