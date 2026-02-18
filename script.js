@@ -1,13 +1,30 @@
 // --- تعریف نقشه مارها و پله‌ها ---
 const snakesAndLadders = {
-    4: 14, 9: 31, 20: 38, 28: 84, 40: 59, 51: 67, 63: 81, 71: 91, // پله‌ها
-    17: 7, 54: 34, 62: 19, 64: 60, 87: 24, 93: 73, 95: 75, 99: 78  // مارها
+    // پله‌ها (صعود)
+    4: 14,
+    9: 31,
+    20: 38,
+    28: 84,
+    40: 59,
+    51: 67,
+    63: 81,
+    71: 91,
+    // مارها (سقوط)
+    17: 7,
+    54: 34,
+    62: 19,
+    64: 60,
+    87: 24,
+    93: 73,
+    95: 75,
+    99: 78
 };
 
+// متغیرهای اصلی بازی
 let currentPosition = 1;
-let diceValue = 1;
 let isMoving = false;
 
+// المنت‌های DOM
 const boardElement = document.getElementById('board');
 const playerPositionSpan = document.getElementById('playerPosition');
 const diceElement = document.getElementById('dice');
@@ -15,25 +32,25 @@ const rollBtn = document.getElementById('rollDiceBtn');
 const newGameBtn = document.getElementById('newGameBtn');
 const gameMessage = document.getElementById('gameMessage');
 
-// --- ساخت صفحه بازی (10x10) با سایز مناسب ---
+// --- ساخت صفحه بازی (10x10) به صورت مارپیچی ---
 function createBoard() {
+    console.log("ساخت صفحه بازی..."); // برای دیباگ
     boardElement.innerHTML = '';
-    const totalCells = 100;
+    
+    // آرایه‌ای از شماره خانه‌ها به ترتیب مارپیچی بسازیم
     const cells = [];
-
-    // آرایه‌ای از شماره خانه‌ها به ترتیب مارپیچی
     for (let row = 0; row < 10; row++) {
-        const rowNumbers = [];
         for (let col = 0; col < 10; col++) {
             let number;
             if (row % 2 === 0) {
-                number = (9 - row) * 10 + col + 1; // ردیف‌های زوج: چپ به راست
+                // ردیف‌های زوج: چپ به راست (از پایین به بالا)
+                number = (9 - row) * 10 + col + 1;
             } else {
-                number = (9 - row) * 10 + (9 - col) + 1; // ردیف‌های فرد: راست به چپ
+                // ردیف‌های فرد: راست به چپ (از پایین به بالا)
+                number = (9 - row) * 10 + (9 - col) + 1;
             }
-            rowNumbers.push(number);
+            cells.push(number);
         }
-        cells.push(...rowNumbers);
     }
 
     // ایجاد سلول‌ها
@@ -47,10 +64,11 @@ function createBoard() {
         numberSpan.textContent = number;
         cell.appendChild(numberSpan);
 
-        // بررسی وجود مار یا پله
+        // بررسی وجود مار یا پله در این خانه
         if (snakesAndLadders[number]) {
             const specialIcon = document.createElement('span');
             specialIcon.className = 'cell-special';
+            // تشخیص مار یا پله
             if (snakesAndLadders[number] > number) {
                 specialIcon.textContent = ' 🪜'; // پله
             } else {
@@ -61,19 +79,26 @@ function createBoard() {
 
         boardElement.appendChild(cell);
     });
+    
+    console.log("تعداد سلول‌های ساخته شده:", cells.length); // برای دیباگ
 }
 
-// --- به‌روزرسانی نمایش موقعیت بازیکن ---
+// --- به‌روزرسانی نمایش موقعیت بازیکن روی صفحه و متن ---
 function updatePlayerPosition() {
+    // حذف کلاس player از همه سلول‌ها
     document.querySelectorAll('.cell').forEach(cell => {
         cell.classList.remove('player');
     });
 
+    // اضافه کردن کلاس player به خانه فعلی
     const currentCell = document.querySelector(`.cell[data-index="${currentPosition}"]`);
     if (currentCell) {
         currentCell.classList.add('player');
+    } else {
+        console.log("سلول پیدا نشد برای موقعیت:", currentPosition);
     }
 
+    // به‌روزرسانی متن موقعیت
     playerPositionSpan.textContent = currentPosition;
 }
 
@@ -94,7 +119,7 @@ async function animateDice(finalValue) {
     diceElement.textContent = diceEmoji[finalValue - 1];
 }
 
-// --- حرکت بازیکن قدم به قدم ---
+// --- حرکت بازیکن با تاخیر ---
 async function movePlayer(steps) {
     return new Promise((resolve) => {
         let stepCount = 0;
@@ -127,7 +152,7 @@ async function movePlayer(steps) {
     });
 }
 
-// --- تابع نمایش انیمیشن مار یا پله ---
+// --- انیمیشن مار یا پله ---
 async function showSpecialAnimation(cellNumber, isSnake) {
     const cell = document.querySelector(`.cell[data-index="${cellNumber}"]`);
     if (cell) {
@@ -145,14 +170,27 @@ async function showSpecialAnimation(cellNumber, isSnake) {
 
 // --- تابع اصلی اجرای نوبت ---
 async function handleRoll() {
-    if (isMoving || currentPosition === 100) return;
+    console.log("handleRoll اجرا شد، موقعیت فعلی:", currentPosition);
+    
+    if (isMoving) {
+        console.log("در حال حرکت هستیم...");
+        return;
+    }
+    
+    if (currentPosition === 100) {
+        gameMessage.textContent = "🎉 شما برنده شدید! دکمه 'بازی جدید' را بزنید.";
+        return;
+    }
 
     isMoving = true;
     rollBtn.disabled = true;
     
+    // 1. پرتاب تاس
     const diceNumber = rollDice();
+    console.log("عدد تاس:", diceNumber);
     await animateDice(diceNumber);
     
+    // 2. بررسی اینکه حرکت باعث نشود از 100 رد شویم
     let newPosition = currentPosition + diceNumber;
     if (newPosition > 100) {
         gameMessage.textContent = `⚡ باید دقیقاً 100 بیای. ${diceNumber} آمد، ${100 - currentPosition} لازم بود.`;
@@ -162,9 +200,11 @@ async function handleRoll() {
     }
 
     gameMessage.textContent = `🎲 عدد ${diceNumber} آمد...`;
+
+    // 3. حرکت تکه‌تکه
     await movePlayer(diceNumber);
 
-    // بررسی مار و پله با انیمیشن
+    // 4. بررسی مار و پله با انیمیشن
     if (snakesAndLadders[currentPosition]) {
         const destination = snakesAndLadders[currentPosition];
         const isSnake = destination < currentPosition;
@@ -184,6 +224,7 @@ async function handleRoll() {
         updatePlayerPosition();
     }
 
+    // 5. بررسی برد
     if (currentPosition === 100) {
         gameMessage.textContent = "🏆 آفرین! شما برنده شدید!";
     } else {
@@ -194,8 +235,9 @@ async function handleRoll() {
     rollBtn.disabled = false;
 }
 
-// --- بازی جدید ---
+// --- شروع بازی جدید ---
 function newGame() {
+    console.log("بازی جدید شروع شد");
     if (isMoving) return;
     
     currentPosition = 1;
@@ -204,12 +246,13 @@ function newGame() {
     gameMessage.textContent = "بازی جدید! روی صفحه ضربه بزن تا تاس بیندازی.";
 }
 
-// --- رویدادها ---
+// --- رویدادها (Event Listeners) ---
 
 // ضربه روی کل صفحه به جز دکمه‌ها
 document.body.addEventListener('touchstart', (e) => {
     // اگر روی دکمه‌ها کلیک نشده و بازی در حال حرکت نیست
     if (!e.target.closest('button') && !isMoving && currentPosition !== 100) {
+        console.log("ضربه روی صفحه تشخیص داده شد");
         handleRoll();
     }
 });
@@ -217,18 +260,27 @@ document.body.addEventListener('touchstart', (e) => {
 // همچنین برای کلیک موس (برای تست در کامپیوتر)
 document.body.addEventListener('click', (e) => {
     if (!e.target.closest('button') && !isMoving && currentPosition !== 100) {
+        console.log("کلیک روی صفحه تشخیص داده شد");
         handleRoll();
     }
 });
 
-rollBtn.addEventListener('click', (e) => {
-    e.stopPropagation(); // جلوگیری از اجرای دوباره
-    handleRoll();
-});
+// دکمه تاس
+if (rollBtn) {
+    rollBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        console.log("دکمه تاس کلیک شد");
+        handleRoll();
+    });
+}
 
-newGameBtn.addEventListener('click', newGame);
+// دکمه بازی جدید
+if (newGameBtn) {
+    newGameBtn.addEventListener('click', newGame);
+}
 
 // --- مقداردهی اولیه ---
+console.log("صفحه در حال بارگذاری است...");
 createBoard();
 updatePlayerPosition();
 gameMessage.textContent = "روی صفحه ضربه بزن تا تاس بیندازی!";
