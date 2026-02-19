@@ -143,8 +143,26 @@ body {
 
 /* آیکون مار و پله روی سلول‌ها */
 .cell-special {
-    font-size: 1rem;
+    font-size: 0.7rem;
     line-height: 1;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin-top: 2px;
+}
+
+/* خانه‌های مار */
+.cell[data-index="17"], .cell[data-index="54"], .cell[data-index="62"], 
+.cell[data-index="64"], .cell[data-index="87"], .cell[data-index="93"], 
+.cell[data-index="95"], .cell[data-index="99"] {
+    background: #ffd1d1 !important;
+}
+
+/* خانه‌های پله */
+.cell[data-index="4"], .cell[data-index="9"], .cell[data-index="20"], 
+.cell[data-index="28"], .cell[data-index="40"], .cell[data-index="51"], 
+.cell[data-index="63"], .cell[data-index="71"] {
+    background: #d8e8b5 !important;
 }
 
 /* خانه شروع و پایان */
