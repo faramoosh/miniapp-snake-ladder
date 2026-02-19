@@ -128,7 +128,7 @@ function createBoard() {
                     iconSpan.textContent = '⬆️';
                     cell.style.backgroundColor = '#d4e6b5';
                 } else {
-                    iconSpan.textContent = '⬇️';
+                    iconSpan.textContent = '🐍';
                     cell.style.backgroundColor = '#ffd1d1';
                 }
                 cell.appendChild(iconSpan);
