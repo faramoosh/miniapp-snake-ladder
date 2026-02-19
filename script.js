@@ -34,7 +34,7 @@ const gameMessage = document.getElementById('gameMessage');
 
 // --- ساخت صفحه بازی (10x10) به صورت مارپیچی ---
 function createBoard() {
-    console.log("ساخت صفحه بازی..."); // برای دیباگ
+    console.log("ساخت صفحه بازی...");
     boardElement.innerHTML = '';
     
     // آرایه‌ای از شماره خانه‌ها به ترتیب مارپیچی بسازیم
@@ -43,15 +43,45 @@ function createBoard() {
         for (let col = 0; col < 10; col++) {
             let number;
             if (row % 2 === 0) {
-                // ردیف‌های زوج: چپ به راست (از پایین به بالا)
                 number = (9 - row) * 10 + col + 1;
             } else {
-                // ردیف‌های فرد: راست به چپ (از پایین به بالا)
                 number = (9 - row) * 10 + (9 - col) + 1;
             }
             cells.push(number);
         }
     }
+
+    // ایجاد سلول‌ها
+    cells.forEach(number => {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.dataset.index = number;
+        
+        // نمایش شماره خانه (خط اول)
+        const numberSpan = document.createElement('span');
+        numberSpan.textContent = number;
+        cell.appendChild(numberSpan);
+
+        // بررسی وجود مار یا پله در این خانه
+        if (snakesAndLadders[number]) {
+            const specialIcon = document.createElement('span');
+            specialIcon.className = 'cell-special';
+            
+            if (snakesAndLadders[number] > number) {
+                // اینجا پله است - استفاده از نمادهای مطمئن
+                specialIcon.textContent = ' ⬆️ پله'; // ⬆️ همه‌جا پشتیبانی می‌شه
+                cell.style.background = '#d4e6b5'; // رنگ سبز ملایم برای پله
+            } else {
+                // اینجا مار است
+                specialIcon.textContent = ' 🐍 مار'; // 🐍 همه‌جا پشتیبانی می‌شه
+                cell.style.background = '#f9cfcf'; // رنگ قرمز ملایم برای مار
+            }
+            cell.appendChild(specialIcon);
+        }
+
+        boardElement.appendChild(cell);
+    });
+}
 
     // ایجاد سلول‌ها
     cells.forEach(number => {
