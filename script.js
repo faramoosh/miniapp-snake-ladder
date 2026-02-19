@@ -411,15 +411,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     // تاچ روی صفحه
-    document.body.addEventListener('touchstart', (e) => {
-        if (!e.target.closest('button') && gameActive && !isMoving) {
+    document.getElementById('board').addEventListener('touchstart', (e) => {
+        e.stopPropagation();
+        if (gameActive && !isMoving) {
             handleRoll();
         }
     });
     
-    // کلیک موس (برای دیباگ)
-    document.body.addEventListener('click', (e) => {
-        if (!e.target.closest('button') && gameActive && !isMoving) {
+    // برای کلیک موس (دیباگ)
+    document.getElementById('board').addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (gameActive && !isMoving) {
             handleRoll();
         }
     });
