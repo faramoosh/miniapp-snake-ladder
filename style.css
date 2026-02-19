@@ -50,7 +50,56 @@ body {
     color: white;
     border: 1px solid #5f9db2;
 }
+.player-selector {
+    background: #213743;
+    padding: 10px;
+    border-radius: 30px;
+    margin-bottom: 15px;
+    text-align: center;
+    color: white;
+}
 
+.player-selector label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: #ffd966;
+}
+
+.player-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.player-count-btn {
+    background: #3a5a6b;
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 30px;
+    flex: 1;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.player-count-btn.active {
+    background: #52b9d1;
+    transform: scale(1.05);
+    box-shadow: 0 2px 0 #217a94;
+}
+
+.turn-indicator {
+    background: #52b9d1;
+    padding: 10px;
+    border-radius: 30px;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 10px;
+}
 .player-indicator {
     display: flex;
     align-items: center;
