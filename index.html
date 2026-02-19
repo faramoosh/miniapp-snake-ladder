@@ -3,23 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>بازی مار و پله | بله</title>
+    <title>مار و پله چندنفره | بله</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="game-container">
-        <h1 class="game-title">🎲 مار و پله 🐍</h1>
+        <h1 class="game-title">🎲 مار و پله چندنفره 🎲</h1>
 
-        <!-- نمایش وضعیت بازیکن -->
-        <div class="player-status">
-            <div class="player-indicator">
-                <span class="player-emoji">🧑</span>
-                <span>موقعیت شما: <span id="playerPosition">1</span></span>
+        <!-- انتخاب تعداد بازیکنان -->
+        <div class="player-selector" id="playerSelector">
+            <label>تعداد بازیکنان:</label>
+            <div class="player-buttons">
+                <button class="player-count-btn active" data-count="2">۲ نفر</button>
+                <button class="player-count-btn" data-count="3">۳ نفر</button>
+                <button class="player-count-btn" data-count="4">۴ نفر</button>
             </div>
-            <button id="newGameBtn" class="new-game-btn">بازی جدید</button>
+            <button id="startGameBtn" class="start-game-btn">شروع بازی جدید</button>
         </div>
 
-        <!-- محلی برای رسم صفحه بازی با جاوااسکریپت -->
+        <!-- وضعیت بازی (بعد از شروع نمایش داده میشه) -->
+        <div class="game-status" id="gameStatus" style="display: none;">
+            <div class="turn-indicator">
+                <span id="turnEmoji">🔴</span>
+                <span id="turnText">نوبت بازیکن قرمز</span>
+            </div>
+            <div class="players-position" id="playersPosition">
+                <!-- موقعیت بازیکن‌ها اینجا نمایش داده میشه -->
+            </div>
+        </div>
+
+        <!-- صفحه بازی -->
         <div id="board" class="board"></div>
 
         <!-- بخش تاس و کنترل -->
@@ -31,7 +44,7 @@
         </div>
 
         <!-- پیام‌های بازی -->
-        <div id="gameMessage" class="game-message">روی دکمه تاس بزنید تا شروع کنید!</div>
+        <div id="gameMessage" class="game-message">تعداد بازیکنان را انتخاب کنید</div>
     </div>
 
     <script src="script.js"></script>
